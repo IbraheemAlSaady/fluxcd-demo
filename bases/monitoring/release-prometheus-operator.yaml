@@ -1,0 +1,18 @@
+---
+# Chart: https://github.com/falcosecurity/charts/tree/master/falco
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: prometheus-operator
+spec:
+  releaseName: prometheus-operator
+  chart:
+    repository: https://kubernetes-charts.storage.googleapis.com
+    name: prometheus-operator
+    version: "9.3.1"
+  values:
+    grafana:
+      admin:
+        existingSecret: "grafana-admin-credentials"
+        userKey: admin-user
+        passwordKey: admin-password
