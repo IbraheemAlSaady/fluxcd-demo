@@ -1,3 +1,5 @@
+![Kustomize Validate](https://github.com/IbraheemAlSaady/fluxcd-demo/workflows/validate/badge.svg)
+
 # FluxCD Demo
 A FluxCD repo used for demo purposes
 
