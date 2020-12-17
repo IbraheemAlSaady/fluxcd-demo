@@ -17,7 +17,7 @@ seal-grafana-password: _sealed_secret_cert
 
 	kubectl create secret generic $(secret_name)  -n $(namespace) \
 		--from-literal=admin-user=admin \
-		--from-literal=admins-password=$(password) \
+		--from-literal=admin-password=$(password) \
 		--dry-run \
 		-o yaml > .secrets/$(secret_name).yaml
 
