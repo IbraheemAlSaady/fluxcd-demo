@@ -1,5 +1,5 @@
-check:
-	sh scripts/kustomize-check.sh
+validate:
+	sh scripts/validate.sh
 
 install:
 	sh scripts/install.sh
