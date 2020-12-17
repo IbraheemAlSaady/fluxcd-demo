@@ -4,22 +4,39 @@ check:
 install:
 	sh scripts/install.sh
 
-seal-grafana-password:
+
+secret_name = "grafana-admin-credentials"
+namespace = "monitoring"
+password = "admin"
+env = "lab"
+
+seal-grafana-password: _sealed_secret_cert
 	mkdir -p .secrets/generated
 
-	echo ">> Generating Kubernetes Secret"
+	echo ">> Generating plain Kubernetes secret"
 
-	secret_name = "grafana-admin-credentials"
-	namespace = "monitoring"
-
-	kubectl -n $(namespace) create secret generic $(secret_name) \
+	kubectl create secret generic $(secret_name)  -n $(namespace) \
 		--from-literal=admin-user=admin \
-		--from-literal=admins-password=$(pass) \
+		--from-literal=admins-password=$(password) \
 		--dry-run \
-		-o json > .secrets/$(secret_name).json
+		-o yaml > .secrets/$(secret_name).yaml
 
-	echo ">> 
+	echo ">> Sealing secret"
 	
 	kubeseal --format=yaml \
+		--cert=.secrets/pub-cert.pem \
 		--scope=strict \
-		--namespace=$(namespace) < .secrets/$(secret_name).json > .secrets/generated/$(secret_name).yaml
+		--namespace=$(namespace) < .secrets/$(secret_name).yaml > .secrets/generated/$(secret_name).yaml
+
+	mv .secrets/generated/$(secret_name).yaml clusters/$(env)/$(secret_name).yaml
+	rm .secrets/$(secret_name).yaml
+
+_sealed_secret_cert:
+	mkdir -p .secrets
+	
+	echo ">> Fetching public cert"
+
+	kubeseal --fetch-cert \
+	--controller-name=sealed-secrets \
+	--controller-namespace=kube-system \
+	> .secrets/pub-cert.pem
