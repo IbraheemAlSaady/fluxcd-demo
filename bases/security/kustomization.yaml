@@ -1,5 +1,0 @@
-namespace: security
-
-resources:
-  - namespace.yaml
-  - release-falco.yaml
