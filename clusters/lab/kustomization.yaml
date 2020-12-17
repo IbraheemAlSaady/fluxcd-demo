@@ -1,4 +1,4 @@
 resources:
-  - grafana-admin-credentials.yaml
-  - ../../bases/security
-  - ../../bases/monitoring
+  # - grafana-admin-credentials.yaml
+  # - ../../bases/security
+  # - ../../bases/monitoring
