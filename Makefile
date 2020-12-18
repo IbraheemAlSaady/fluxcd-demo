@@ -4,13 +4,15 @@ validate:
 install:
 	sh scripts/install.sh
 
+uninstall:
+	sh scripts/uninstall.sh
 
 secret_name = "grafana-admin-credentials"
 namespace = "monitoring"
 password = "admin"
 env = "lab"
 
-seal-grafana-password: _sealed_secret_cert
+seal_secrets: _fetch_cert
 	mkdir -p .secrets/generated
 
 	echo ">> Generating plain Kubernetes secret"
@@ -31,7 +33,7 @@ seal-grafana-password: _sealed_secret_cert
 	mv .secrets/generated/$(secret_name).yaml clusters/$(env)/$(secret_name).yaml
 	rm .secrets/$(secret_name).yaml
 
-_sealed_secret_cert:
+_fetch_cert:
 	mkdir -p .secrets
 	
 	echo ">> Fetching public cert"
